@@ -1,0 +1,48 @@
+body{
+    justify-items: center;
+    text-align: center;
+    background-color: lightblue;
+}
+  
+  h2{
+    color: red;
+  }  
+.big{
+    height: 30rem;
+    width:30rem;
+    margin: auto;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+.box{
+   height:10rem;
+   width:10rem;
+   border: 5px black solid;
+   border-radius: 5rem;
+   margin-top: 3rem;
+}
+.b4{
+  background-color: green;
+}  
+.b3{
+background-color: blue;
+}
+.b1{
+background-color:red ;
+}
+.b2{
+background-color: yellow;
+}
+button{
+    background-color: black;
+    color: red;
+    border-radius: 2rem;
+    transform: scale(1.5);
+}
+.flash{
+  background-color: white;
+}
+.lost{
+  background-color: red;
+}
