@@ -3,21 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simon says Game</title>
-    <link rel="stylesheet" href="play.css">
+    <title>Simon Says Game</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-   
-    <h1>Simon Says Game</h1>
-    <h2>Level 0</h2>
-    <br>
-    <div class="big">
-        <div class="box b1" ></div>
-        <div class="box b2" ></div>
-        <div class="box b3" ></div>
-        <div class="box b4"  ></div>
+    <div class="game-container">
+        <audio id="sound-green" src="tone.mp3"></audio>
+        <audio id="sound-red" src="tone.mp3"></audio>
+        <audio id="sound-yellow" src="tone.mp3"></audio>
+        <audio id="sound-blue" src="tone.mp3"></audio>
+        <h1>Simon Says</h1>
+        <div class="simon-board">
+            <div id="green" class="color-box green"></div>
+            <div id="red" class="color-box red"></div>
+            <div id="yellow" class="color-box yellow"></div>
+            <div id="blue" class="color-box blue"></div>
+        </div>
+        <button id="start-btn">Start Game</button>
+        <p id="status"></p>
     </div>
-    <button>Click here to start the game</button>
-    <script src="simon.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
