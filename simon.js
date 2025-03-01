@@ -1,130 +1,78 @@
-let d=document.querySelectorAll(".box");
-let h2=document.querySelector("h2");
-let body=document.querySelector("body");
-let gamseq=[];
-let comseq=[];
-let k=0;
-let level=0;
-let p=0;
-let btn=document.querySelector("button");
-btn.addEventListener("click",start,{once:true});
-function levelUp(){
-    gamseq=[];
-    k=0;
-    let x=Math.floor(Math.random()*4);
-    comseq[level]=d[x];
-    level++;
-    h2.innerText=`Level ${level}`;
-   traverse();
-} 
-function start(){
-    levelUp();
-       d[0].addEventListener("click",function(){
-            gamseq[k]=d[0];
-            d[0].classList.add("flash");
-            setTimeout(function(){
-                d[0].classList.remove("flash");
-            },100);
-            if(comseq[k]==d[0])
-                {
-                k++;
-            }
-            else
-               {
-                lost();
-                p=-1;
-               }
-            if(k==level && k!=0){
-                k=0;
-                levelUp();
-            }
-        })
-        d[1].addEventListener("click",function(){
-            d[1].classList.add("flash");
-            setTimeout(function(){
-                d[1].classList.remove("flash");
-            },100);
-            gamseq[k]=d[1];
-            if(comseq[k]==d[1])
-                {
-                k++;}
-            else
-               {
-                lost();
-                p=-1;
-               }
-            if(k==level && k!=0){
-                k=0;
-                levelUp();
-            }
-        })
-        d[2].addEventListener("click",function(){
-            d[2].classList.add("flash");
-            setTimeout(function(){
-                d[2].classList.remove("flash");
-            },100);
-            gamseq[k]=d[2];
-            if(comseq[k]==d[2])
-                {
-                k++;
-                }
-            else
-              {
-                p=-1;
-                lost();
-              }
-              if(k==level && k!=0)
-                {
-                levelUp();
-                }
-           
-        })
-        d[3].addEventListener("click",function(){
-            d[3].classList.add("flash");
-            setTimeout(function(){
-                d[3].classList.remove("flash");
-            },100);
-            gamseq[k]=d[3];
-            if(comseq[k]==d[3])
-                {
-                k++;}
-            else
-               {
-                p=-1;
-                lost();
-               }
-            if(k==level && k!=0)
-                {
-                levelUp();
-                }
-        }
-        
-)
-if(p==-1)
-    return;
+const colors = ['green', 'red', 'yellow', 'blue'];
+let gameSequence = [];
+let userSequence = [];
+let level = 0;
+let gameStarted = false;
+
+// Select DOM elements
+const startButton = document.getElementById('start-btn');
+const statusDisplay = document.getElementById('status');
+const colorBoxes = document.querySelectorAll('.color-box');
+
+// Start the game
+startButton.addEventListener('click', startGame);
+
+function startGame() {
+    level = 0;
+    gameSequence = [];
+    userSequence = [];
+    gameStarted = true;
+    statusDisplay.textContent = "Level " + (level + 1);
+    nextSequence();
 }
-function lost(){
+
+function nextSequence() {
+    userSequence = [];
+    level++;
+    statusDisplay.textContent = "Level " + level;
     
-    h2.innerText=`You Lost,Your score was ${level-1}`;
-    level=0;
-    btn.innerText="If you wanna play again just refresh the page";
-    body.classList.add("lost");
-    setTimeout(function(){
-        body.classList.remove("lost");
-    },100);
-}   
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
- }
- async function traverse()
- {
-    for(j of comseq)
-        {
-            await sleep(300);
-                j.classList.add("flash");
-    setTimeout(function(){
-        j.classList.remove("flash");
-    },250);
-    await sleep(300);
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    gameSequence.push(randomColor);
+    
+    gameSequence.forEach((color, index) => {
+        setTimeout(() => {
+            flashColor(color);
+        }, (index + 1) * 600);
+    });
+}
+
+// Flash the color with sound
+function flashColor(color) {
+    const element = document.getElementById(color);
+    const sound = document.getElementById(`sound-${color}`);
+    
+    element.classList.add('flashing');
+    sound.play();  // Play the sound for the specific color
+    
+    setTimeout(() => {
+        element.classList.remove('flashing');
+    }, 600);  // Adjust the timing to match the animation duration
+}
+
+// Handle user clicks
+colorBoxes.forEach(box => {
+    box.addEventListener('click', (e) => {
+        if (!gameStarted) return;
+        
+        const userChosenColor = e.target.id;
+        userSequence.push(userChosenColor);
+        flashColor(userChosenColor);
+        checkAnswer(userSequence.length - 1);
+    });
+});
+
+// Check user answer
+function checkAnswer(currentLevel) {
+    if (userSequence[currentLevel] === gameSequence[currentLevel]) {
+        if (userSequence.length === gameSequence.length) {
+            setTimeout(nextSequence, 1000);
         }
- }
+    } else {
+        gameOver();
+    }
+}
+
+function gameOver() {
+    statusDisplay.textContent = "Game Over! Press Start to Retry.";
+    gameStarted = false;
+}
